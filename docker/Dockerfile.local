@@ -1,0 +1,25 @@
+FROM golang:1.21
+
+WORKDIR /app
+
+RUN mkdir /home/container && \
+  chmod 0777 /home/container
+
+RUN groupadd --gid 1000 -r localgrp -o && \
+  useradd --system --uid=1000 --gid=1000 --home-dir /home/container local1000 -o && \
+  useradd --system --uid=1001 --gid=1000 --home-dir /home/container local1001 -o && \
+  useradd --system --uid=1010 --gid=1000 --home-dir /home/container local1010 -o
+
+COPY infra/gitconfig /home/container/.gitconfig
+COPY infra/gitconfig /root/.gitconfig
+
+COPY infra/sshconfig /home/container/.ssh/config
+COPY infra/sshconfig /root/.ssh/config
+
+ENV HOME /home/container
+
+RUN go install github.com/cespare/reflex@latest
+
+EXPOSE 9099
+
+ENTRYPOINT reflex -r '\.go$' -s -- sh -c 'echo "Running local server" && go mod tidy && go run .'

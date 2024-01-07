@@ -1,0 +1,20 @@
+services:
+    backend:
+        build:
+            dockerfile: docker/Dockerfile.local
+            context: .
+        environment:
+            PUBSUB_EMULATOR_HOST: gpubsub:8085
+            CONFIG_FILE: config/config.yml
+            SSH_AUTH_SOCK: $SSH_AUTH_SOCK
+        ports:
+            - "9099:9099"
+        restart: always
+        volumes:
+            - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+            - .:/app
+        networks:
+            - td-360
+
+networks:
+    td-360:

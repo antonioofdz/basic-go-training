@@ -1,0 +1,4 @@
+
+Host bitbucket.org
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
