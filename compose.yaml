@@ -16,5 +16,14 @@ services:
         networks:
             - td-360
 
+    postgres:
+        image: postgres:alpine
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: patientdb
+        ports:
+            - "5432:5432"
+
 networks:
     td-360:
